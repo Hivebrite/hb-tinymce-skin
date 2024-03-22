@@ -1,0 +1,94 @@
+@import "src/less/theme/theme";
+
+@color-tint: #4733ff;
+@keyboard-focus-outline-color: #4733ff;
+@keyboard-focus-outline-width: 1px;
+@toolbar-button-bespoke-background-color: transparent;
+@toolbar-button-border-radius: 5px;
+@toolbar-button-enabled-background-color: #4733ff;
+@toolbar-button-enabled-icon-color: #ffffff;
+@toolbar-button-enabled-text-color: #ffffff;
+@toolbar-button-focus-background-color: #4733ff;
+@toolbar-button-focus-box-shadow: 0 0 0 2px #4733ff;
+@toolbar-button-focus-icon-color: #ffffff;
+@toolbar-button-focus-text-color: #ffffff;
+@toolbar-button-height: 40px;
+@toolbar-button-hover-background-color: #4733ff0a;
+@toolbar-button-width: 40px;
+@toolbar-group-padding-x: 4px;
+// From hivebrite_js -> packages/theme/src/utils/primaryShadow.ts
+@editor-header-box-shadow: 0 1px 6px 0 rgba(0, 0, 0, .1);
+
+.tox {
+  .tox-tbtn--bespoke,
+  .tox-number-input {
+    height: @toolbar-button-height - (@keyboard-focus-outline-width * 2);
+    margin-left: @toolbar-button-spacing-x + 3px;
+    margin-right: @toolbar-button-spacing-x + 3px;
+  }
+
+  .tox-tbtn--bespoke:not(:focus) {
+    box-shadow: 0 0 0 @keyboard-focus-outline-width #000;
+    position: relative;
+
+    &::after {
+      .keyboard-focus-outline-mixin();
+
+      box-shadow: 0 0 0 @keyboard-focus-outline-width #000;
+    }
+  }
+
+  .tox-number-input {
+    box-shadow: 0 0 0 @keyboard-focus-outline-width #000;
+
+    button {
+      height: @toolbar-button-height - (@keyboard-focus-outline-width * 2);
+
+      &.minus::after {
+        border-radius: @toolbar-button-border-radius 0 0 @toolbar-button-border-radius;
+      }
+
+      &.plus::after {
+        border-radius: 0 @toolbar-button-border-radius @toolbar-button-border-radius 0;
+      }
+    }
+
+    .tox-input-wrapper:has(input:focus)::after {
+      border-radius: 0;
+    }
+  }
+
+  .tox-split-button:focus svg {
+    fill: @toolbar-button-focus-icon-color;
+  }
+
+  .tox-split-button__chevron.tox-tbtn--enabled svg {
+    fill: @toolbar-button-enabled-icon-color;
+  }
+
+  .tox-split-button:focus {
+    box-shadow: none;
+
+    &::after {
+      box-shadow: none;
+    }
+  }
+
+  .tox-tbtn--active:not(:hover) .tox-tbtn__select-chevron svg {
+    fill: @toolbar-button-enabled-icon-color;
+  }
+
+  .tox-tbtn--select {
+    &.tox-tbtn--active {
+      color: @toolbar-button-icon-color;
+
+      &:not(:hover) .tox-tbtn__select-chevron svg {
+        fill: @toolbar-button-icon-color;
+      }
+    }
+
+    &:focus:not(.tox-tbtn--disabled) {
+      color: @toolbar-button-icon-color;
+    }
+  }
+}
