@@ -1,3 +1,24 @@
+# Hivebrite
+
+This repository is used to maintain and build the custom `hivebrite` skin for TinyMCE.
+
+The skin is located in the project at `modules/oxide/src/less/skins/ui/hivebrite/`
+
+## Developing the skin
+
+1. Run `yarn install` to install the dependencies
+2. Launch the web server to preview the skins using the command `yarn oxide-start`
+3. The skin is automatically rebuilt every time you make a change. The built skin can be found in `modules/oxide/build/skins/ui/hivebrite`
+
+## Building the skin
+
+1. If you just need to build the skins without launching a web server, run `yarn oxide-build`
+2. The built skin can be found in `modules/oxide/build/skins/ui/hivebrite`
+
+## More information
+
+See https://www.tiny.cloud/docs/tinymce/6/creating-a-skin/
+
 # TinyMCE
 
 The world's #1 open source rich text editor.
