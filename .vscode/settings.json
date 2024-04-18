@@ -1,5 +1,9 @@
 // Place your settings in this file to overwrite default and user settings.
 {
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+
   // We don't always upgrade typescript immediately, this helps avoid errors when vscode is ahead
   "typescript.tsdk": "node_modules/typescript/lib",
 
@@ -37,7 +41,7 @@
     "node_modules/@ephox/sand": true,
     "node_modules/@ephox/snooker": true,
     "node_modules/@ephox/sugar": true,
-    "node_modules/@ephox/tinymce": true,
+    "node_modules/@ephox/tinymce": true
   },
 
   "search.exclude": {
@@ -52,5 +56,7 @@
 
     // Search can just exclude node_modules completely
     "node_modules": true
-  }
+  },
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "stylelint.vscode-stylelint"
 }

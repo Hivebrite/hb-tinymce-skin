@@ -1,45 +1,58 @@
 @import "src/less/theme/theme";
 
+// // DEBUG
+// @toolbar-button-background-color: lightgrey;
+// // END OF DEBUG
+
+@_toolbar-row-separator-image-size: calc(100% - 32px) calc(100% - @_toolbar-row-separator-downsize);
+@button-padding-x: 12px;
+@button-padding-y: 5px;
 @color-tint: #4733ff;
+@dialog-body-padding: 0 @pad-md;
+@dialog-footer-padding: @pad-md;
+@dialog-header-padding: @pad-md;
+@dialog-title-font-weight: 600;
+@editor-header-box-shadow: 0 1px 6px 0 rgba(0, 0, 0, .1); // From hivebrite_js -> packages/theme/src/utils/primaryShadow.ts
+@form-group-horizontal-spacing: 24px;
+@form-group-vertical-spacing: 24px;
 @keyboard-focus-outline-color: #4733ff;
-@keyboard-focus-outline-width: 1px;
+@keyboard-focus-outline-width: 2px;
+@pad-md: 24px;
+@pad-sm: 12px;
 @toolbar-button-bespoke-background-color: transparent;
+@toolbar-button-bespoke-spacing-x: 8px;
 @toolbar-button-border-radius: 5px;
+@toolbar-button-chevron-color: #000;
+@toolbar-button-chevron-width: 32px;
 @toolbar-button-enabled-background-color: #4733ff;
 @toolbar-button-enabled-icon-color: #ffffff;
 @toolbar-button-enabled-text-color: #ffffff;
-@toolbar-button-focus-background-color: #4733ff;
-@toolbar-button-focus-box-shadow: 0 0 0 2px #4733ff;
-@toolbar-button-focus-icon-color: #ffffff;
-@toolbar-button-focus-text-color: #ffffff;
 @toolbar-button-height: 40px;
 @toolbar-button-hover-background-color: #4733ff0a;
+@toolbar-button-select-space-right: 16px;
+@toolbar-button-spacing-x: 2px;
+@toolbar-button-spacing-y: 8px;
 @toolbar-button-width: 40px;
-@toolbar-group-padding-x: 4px;
-// From hivebrite_js -> packages/theme/src/utils/primaryShadow.ts
-@editor-header-box-shadow: 0 1px 6px 0 rgba(0, 0, 0, .1);
+@toolbar-group-padding-x: 2px;
 
 .tox {
-  .tox-tbtn--bespoke,
-  .tox-number-input {
-    height: @toolbar-button-height - (@keyboard-focus-outline-width * 2);
-    margin-left: @toolbar-button-spacing-x + 3px;
-    margin-right: @toolbar-button-spacing-x + 3px;
+  .tox-label {
+    margin-bottom: 8px;
   }
 
   .tox-tbtn--bespoke:not(:focus) {
-    box-shadow: 0 0 0 @keyboard-focus-outline-width #000;
+    box-shadow: 0 0 0 1px #000;
     position: relative;
 
     &::after {
       .keyboard-focus-outline-mixin();
 
-      box-shadow: 0 0 0 @keyboard-focus-outline-width #000;
+      box-shadow: 0 0 0 1px #000;
     }
   }
 
   .tox-number-input {
-    box-shadow: 0 0 0 @keyboard-focus-outline-width #000;
+    box-shadow: 0 0 0 1px #000;
 
     button {
       height: @toolbar-button-height - (@keyboard-focus-outline-width * 2);
@@ -62,15 +75,33 @@
     fill: @toolbar-button-focus-icon-color;
   }
 
-  .tox-split-button__chevron.tox-tbtn--enabled svg {
-    fill: @toolbar-button-enabled-icon-color;
+  .tox-split-button__chevron {
+    padding-left: 4px;
+    padding-right: @toolbar-button-select-space-right;
+
+    &.tox-tbtn--enabled svg {
+      fill: @toolbar-button-enabled-icon-color;
+    }
   }
 
-  .tox-split-button:focus {
-    box-shadow: none;
+  .tox-tbtn--active,
+  .tox-tbtn--enabled,
+  .tox-tbtn--enabled:focus,
+  .tox-tbtn--enabled:hover {
+    &:focus {
+      color: @toolbar-button-enabled-text-color;
 
-    &::after {
-      box-shadow: none;
+      svg {
+        fill: @toolbar-button-enabled-icon-color;
+      }
+    }
+  }
+
+  .tox-tbtn:active:focus {
+    color: @toolbar-button-enabled-text-color;
+
+    svg {
+      fill: @toolbar-button-enabled-icon-color;
     }
   }
 
@@ -78,17 +109,93 @@
     fill: @toolbar-button-enabled-icon-color;
   }
 
+  .tox-tbtn__select-chevron {
+    padding-left: 4px;
+    padding-right: @toolbar-button-select-space-right - @toolbar-button-select-padding;
+  }
+
   .tox-tbtn--select {
     &.tox-tbtn--active {
-      color: @toolbar-button-icon-color;
+      background-color: @toolbar-button-enabled-background-color;
 
-      &:not(:hover) .tox-tbtn__select-chevron svg {
-        fill: @toolbar-button-icon-color;
+      .tox-tbtn__select-chevron svg {
+        fill: @toolbar-button-enabled-icon-color;
+      }
+
+      &:hover .tox-icon svg {
+        fill: @toolbar-button-enabled-icon-color;
       }
     }
 
-    &:focus:not(.tox-tbtn--disabled) {
-      color: @toolbar-button-icon-color;
+    .tox-tbtn__select-chevron {
+      box-sizing: border-box;
+    }
+
+    // Messes up with overflow...
+    &.tox-tbtn--bespoke {
+      .tox-tbtn__select-chevron {
+        padding-right: 8px;
+        width: 24px;
+      }
+    }
+
+    // Messes up with overflow...
+    .tox-icon {
+      padding-left: 12px;
+      padding-right: 4px;
+    }
+
+    &.tox-tbtn--bespoke.tox-tbtn--active {
+      background-color: @toolbar-button-background-color;
+      color: @toolbar-button-text-color;
+
+      .tox-tbtn__select-chevron svg {
+        fill: @toolbar-button-icon-color;
+      }
+    }
+  }
+
+  .tox-tbtn.tox-tbtn--bespoke:active:focus {
+    color: @toolbar-button-text-color;
+
+    svg {
+      fill: @toolbar-button-icon-color;
+    }
+  }
+
+  // Messes up with overflow...
+  .tox-split-button {
+    .tox-split-button__chevron {
+      width: 34px;
+
+      .tox-icon {
+        padding-left: 6px;
+        padding-right: 16px;
+      }
+    }
+
+    .tox-tbtn:first-child {
+      width: 46px;
+
+      .tox-icon {
+        padding-left: 16px;
+        padding-right: 6px;
+      }
+    }
+  }
+
+  &.tox-tinymce-aux .tox-toolbar__overflow {
+    margin-top: 8px;
+    padding: @pad-xs 10px;
+  }
+
+  // Disable separator for easier spacing control
+  .tox-toolbar__group {
+    border: 0 !important;
+
+    //last button
+    button:last-child {
+      margin-right: 0 !important;
     }
   }
 }
