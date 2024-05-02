@@ -25,19 +25,36 @@
 @toolbar-button-chevron-color: #000;
 @toolbar-button-chevron-width: 32px;
 @toolbar-button-enabled-background-color: #4733ff;
+@toolbar-button-bespoke-label-max-width: 6em;
 @toolbar-button-enabled-icon-color: #ffffff;
 @toolbar-button-enabled-text-color: #ffffff;
 @toolbar-button-height: 40px;
 @toolbar-button-hover-background-color: #4733ff0a;
 @toolbar-button-select-space-right: 16px;
 @toolbar-button-spacing-x: 2px;
-@toolbar-button-spacing-y: 8px;
+@toolbar-button-spacing-y: 12px;
+@toolbar-padding-x: 10px;
 @toolbar-button-width: 40px;
-@toolbar-group-padding-x: 2px;
+@toolbar-group-padding-x: 0px;
 
 .tox {
+  .tox-menu {
+    margin-top: 4px;
+  }
+
   .tox-label {
     margin-bottom: 8px;
+  }
+
+  &:not(.tox-tinymce-inline) .tox-editor-header {
+    padding: 0;
+  }
+
+  .tox-tbtn,
+  .tox-number-input,
+  .tox-tbtn--select,
+  .tox-split-button {
+    margin: @toolbar-button-spacing-y @toolbar-button-spacing-x @toolbar-button-spacing-y 0;
   }
 
   .tox-tbtn--bespoke:not(:focus) {
@@ -112,6 +129,7 @@
   .tox-tbtn__select-chevron {
     padding-left: 4px;
     padding-right: @toolbar-button-select-space-right - @toolbar-button-select-padding;
+    width: 28px;
   }
 
   .tox-tbtn--select {
@@ -120,15 +138,13 @@
 
       .tox-tbtn__select-chevron svg {
         fill: @toolbar-button-enabled-icon-color;
+        height: 12px;
+        width: 12px;
       }
 
       &:hover .tox-icon svg {
         fill: @toolbar-button-enabled-icon-color;
       }
-    }
-
-    .tox-tbtn__select-chevron {
-      box-sizing: border-box;
     }
 
     // Messes up with overflow...
@@ -166,22 +182,23 @@
   // Messes up with overflow...
   .tox-split-button {
     .tox-split-button__chevron {
-      width: 34px;
-
-      .tox-icon {
-        padding-left: 6px;
-        padding-right: 16px;
-      }
+      padding-left: 8px;
+      padding-right: 8px;
+      width: 28px;
     }
 
     .tox-tbtn:first-child {
-      width: 46px;
+      width: 48px;
 
       .tox-icon {
-        padding-left: 16px;
-        padding-right: 6px;
+        padding-left: 12px;
+        padding-right: 12px;
       }
     }
+  }
+
+  .tox-split-button:hover {
+    box-shadow: none;
   }
 
   &.tox-tinymce-aux .tox-toolbar__overflow {
