@@ -20,7 +20,7 @@
 @pad-md: 24px;
 @pad-sm: 12px;
 @toolbar-button-bespoke-background-color: transparent;
-@toolbar-button-bespoke-spacing-x: 8px;
+@toolbar-button-bespoke-spacing-x: 2px;
 @toolbar-button-border-radius: 5px;
 @toolbar-button-chevron-color: #000;
 @toolbar-button-chevron-width: 32px;
@@ -51,10 +51,13 @@
   }
 
   .tox-tbtn,
-  .tox-number-input,
-  .tox-tbtn--select,
   .tox-split-button {
     margin: @toolbar-button-spacing-y @toolbar-button-spacing-x @toolbar-button-spacing-y 0;
+  }
+
+  .tox-pop__dialog {
+    padding-left: 12px;
+    padding-right: 12px;
   }
 
   .tox-tbtn--bespoke:not(:focus) {
@@ -68,12 +71,15 @@
     }
   }
 
+  .tox-icon svg {
+    max-width: none;
+  }
+
   .tox-number-input {
     box-shadow: 0 0 0 1px #000;
+    margin: @toolbar-button-spacing-y 6px @toolbar-button-spacing-y 4px;
 
     button {
-      height: @toolbar-button-height - (@keyboard-focus-outline-width * 2);
-
       &.minus::after {
         border-radius: @toolbar-button-border-radius 0 0 @toolbar-button-border-radius;
       }
@@ -147,15 +153,15 @@
       }
     }
 
-    // Messes up with overflow...
     &.tox-tbtn--bespoke {
+      margin: @toolbar-button-spacing-y 6px @toolbar-button-spacing-y 4px;
+
       .tox-tbtn__select-chevron {
         padding-right: 8px;
         width: 24px;
       }
     }
 
-    // Messes up with overflow...
     .tox-icon {
       padding-left: 12px;
       padding-right: 4px;
@@ -179,21 +185,11 @@
     }
   }
 
-  // Messes up with overflow...
   .tox-split-button {
     .tox-split-button__chevron {
-      padding-left: 8px;
-      padding-right: 8px;
-      width: 28px;
-    }
-
-    .tox-tbtn:first-child {
-      width: 48px;
-
-      .tox-icon {
-        padding-left: 12px;
-        padding-right: 12px;
-      }
+      padding-left: 4px;
+      padding-right: 4px;
+      width: 20px;
     }
   }
 
@@ -209,10 +205,6 @@
   // Disable separator for easier spacing control
   .tox-toolbar__group {
     border: 0 !important;
-
-    //last button
-    button:last-child {
-      margin-right: 0 !important;
-    }
+    padding: 0;
   }
 }
