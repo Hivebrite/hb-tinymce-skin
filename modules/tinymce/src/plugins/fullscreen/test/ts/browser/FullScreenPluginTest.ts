@@ -1,8 +1,8 @@
-import { UiFinder } from '@ephox/agar';
+import { Keys, UiFinder } from '@ephox/agar';
 import { afterEach, context, describe, it } from '@ephox/bedrock-client';
 import { Arr, Type } from '@ephox/katamari';
 import { PlatformDetection } from '@ephox/sand';
-import { Attribute, Classes, Css, Html, SelectorFind, SugarBody, SugarDocument, SugarElement, SugarShadowDom, Traverse } from '@ephox/sugar';
+import { Attribute, Classes, Css, Html, SelectorFind, SugarBody, SugarDocument, SugarElement, SugarShadowDom, TextContent, Traverse } from '@ephox/sugar';
 import { McEditor, TinyContentActions, TinyDom, TinyHooks, TinyUiActions } from '@ephox/wrap-mcagar';
 import { assert } from 'chai';
 
@@ -31,12 +31,18 @@ describe('browser.tinymce.plugins.fullscreen.FullScreenPluginTest', () => {
 
   const pWaitForDialog = async (editor: Editor, ariaLabel: string) => {
     const dialog = await TinyUiActions.pWaitForDialog(editor);
-    if (Attribute.has(dialog, 'aria-labelledby')) {
-      const labelledby = Attribute.get(dialog, 'aria-labelledby');
-      const dialogLabel = SelectorFind.descendant<HTMLLabelElement>(dialog, '#' + labelledby).getOrDie('Could not find labelledby');
-      assert.equal(Html.get(dialogLabel), ariaLabel, 'Checking label text');
+    if (!Attribute.has(dialog, 'aria-labelledby') && !Attribute.has(dialog, 'aria-label')) {
+      throw new Error('Dialog did not have correct aria attribute');
+    }
+
+    if (platform.os.isMacOS()) {
+      const ariaLabel = Attribute.get(dialog, 'aria-label');
+      const dialogLabel = SelectorFind.descendant<HTMLHeadingElement>(dialog, 'h1').getOrDie('Could not find dialog title');
+      assert.equal(TextContent.get(dialogLabel), ariaLabel, 'Checking aria-label text');
     } else {
-      throw new Error('Dialog did not have an aria-labelledby');
+      const labelledby = Attribute.get(dialog, 'aria-labelledby');
+      const dialogLabel = SelectorFind.descendant<HTMLHeadingElement>(dialog, '#' + labelledby).getOrDie('Could not find labelledby');
+      assert.equal(Html.get(dialogLabel), ariaLabel, 'Checking label text');
     }
   };
 
@@ -124,6 +130,7 @@ describe('browser.tinymce.plugins.fullscreen.FullScreenPluginTest', () => {
       const hook = tester.setup<Editor>({
         plugins: 'fullscreen link',
         base_url: '/project/tinymce/js/tinymce',
+        toolbar: 'fullscreen',
         setup: (editor: Editor) => {
           firedEvents = [];
           editor.on('FullscreenStateChanged ResizeEditor', (e: any) => {
@@ -199,6 +206,25 @@ describe('browser.tinymce.plugins.fullscreen.FullScreenPluginTest', () => {
         notification.close();
         assertApiAndEvents(editor, false);
         assertPageState(editor, false);
+      });
+
+      const assertButtonNativelyEnabled = (editor: Editor, selector: string) => UiFinder.exists(TinyDom.container(editor), `[data-mce-name="${selector}"]:not([disabled="disabled"])`);
+      const pAssertMenuItemEnabled = (editor: Editor, menuItemLabel: string) => TinyUiActions.pWaitForUi(editor, `[role="menuitemcheckbox"][aria-label="${menuItemLabel}"][aria-disabled="false"]`);
+
+      it('TINY-11264: Fullscreen toolbar button and menu item should be enabled at all time', async () => {
+        const editor = hook.editor();
+        assertButtonNativelyEnabled(editor, 'fullscreen');
+        TinyUiActions.clickOnMenu(editor, '.tox-mbtn:contains("View")');
+        await pAssertMenuItemEnabled(editor, 'Fullscreen');
+        TinyUiActions.keystroke(editor, Keys.escape());
+
+        editor.mode.set('readonly');
+        assertButtonNativelyEnabled(editor, 'fullscreen');
+        TinyUiActions.clickOnMenu(editor, '.tox-mbtn:contains("View")');
+        await pAssertMenuItemEnabled(editor, 'Fullscreen');
+        TinyUiActions.keystroke(editor, Keys.escape());
+
+        editor.mode.set('design');
       });
     });
 

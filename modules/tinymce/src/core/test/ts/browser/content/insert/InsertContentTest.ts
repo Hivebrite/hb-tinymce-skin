@@ -1,4 +1,5 @@
 import { context, describe, it } from '@ephox/bedrock-client';
+import { Unicode } from '@ephox/katamari';
 import { TinyAssertions, TinyHooks, TinySelections, TinyState } from '@ephox/wrap-mcagar';
 import { assert } from 'chai';
 
@@ -383,11 +384,7 @@ describe('browser.tinymce.core.content.insert.InsertContentTest', () => {
       merge: true
     });
     TinyAssertions.assertContent(editor, '<p>' +
-      '<span style="font-size: 9pt;">' +
-      '<span style="font-size: 14pt;">' +
       '<span style="font-size: 9pt;">test</span>' +
-      '</span>' +
-      '</span>' +
       '</p>');
   });
 
@@ -406,8 +403,8 @@ describe('browser.tinymce.core.content.insert.InsertContentTest', () => {
       merge: true
     });
     TinyAssertions.assertContent(editor, '<p>' +
-      '<span style="color: red; font-size: 9pt;">' +
-      '<span style="background-color: red; color: red;">test</span>' +
+      '<span style="background-color: red; color: red;">' +
+      '<span style="color: red; font-size: 9pt;">test</span>' +
       '</span>' +
       '</p>');
   });
@@ -435,11 +432,13 @@ describe('browser.tinymce.core.content.insert.InsertContentTest', () => {
       merge: true
     });
     TinyAssertions.assertContent(editor, '<p>' +
-    '<span style="color: yellow;">' +
     '<span style="background-color: red;">' +
+    '<span style="color: yellow;">' +
     '<span style="color: red;">red</span>' +
     'yellow' +
-    '<span style="color: blue;"><strong>blue</strong></span>' +
+    '<strong>' +
+    '<span style="color: blue;">blue</span>' +
+    '</strong>' +
     '</span>' +
     '</span>' +
     '</p>');
@@ -504,15 +503,13 @@ describe('browser.tinymce.core.content.insert.InsertContentTest', () => {
       merge: true
     });
     TinyAssertions.assertContent(editor, '<p>' +
-      '<span style="font: italic 10px sans-serif;">' +
-      '<span style="font-size: 10px;">test</span>' +
+      '<span style="font-size: 10px;">' +
+      '<span style="font: italic 10px sans-serif;">test</span>' +
       '</span>' +
       '</p>' +
       '<p>' +
-      '<span style="font: italic 10px sans-serif;">' +
       '<span style="font-size: 12px;">' +
       '<span style="font: italic 10px sans-serif;">test</span>' +
-      '</span>' +
       '</span>' +
       '</p>');
   });
@@ -541,15 +538,13 @@ describe('browser.tinymce.core.content.insert.InsertContentTest', () => {
       merge: true
     });
     TinyAssertions.assertContent(editor, '<p>' +
-      '<span style="font-style: italic;">' +
-      '<span style="font: italic 12px sans-serif;">test</span>' +
+      '<span style="font: italic 12px sans-serif;">' +
+      '<span style="font-style: italic;">test</span>' +
       '</span>' +
       '</p>' +
       '<p>' +
-      '<span style="font-size: 10px;">' +
       '<span style="font: italic 12px sans-serif;">' +
       '<span style="font-size: 10px;">test</span>' +
-      '</span>' +
       '</span>' +
       '</p>');
   });
@@ -610,7 +605,8 @@ describe('browser.tinymce.core.content.insert.InsertContentTest', () => {
             '</td>' +
           '</tr>' +
         '</tbody>' +
-      '</table>'
+      '</table>' +
+      `<p>${Unicode.nbsp}</p>`
     );
   });
 
@@ -839,7 +835,6 @@ describe('browser.tinymce.core.content.insert.InsertContentTest', () => {
       editor.setContent('<p>initial</p>');
       TinySelections.setCursor(editor, [ 0 ], 0);
       editor.insertContent('<!--\ufeff><iframe onload=alert(document.domain)>-></body>-->');
-      // TINY-10305: Safari escapes text nodes within <iframe>.
       TinyAssertions.assertRawContent(editor, '<p><!---->initial</p>');
     });
   });

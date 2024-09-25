@@ -76,7 +76,7 @@ const registry = (): Registry.Registry => {
      * the cursor is on an image element.
      * <br>
      * For information on creating context toolbars, see:
-     * <a href="https://www.tiny.cloud/docs/tinymce/6/contexttoolbar/">
+     * <a href="https://www.tiny.cloud/docs/tinymce/7/contexttoolbar/">
      * UI Components - Context Toolbar</a>.
      *
      * @method addContextToolbar
@@ -239,6 +239,19 @@ const registry = (): Registry.Registry => {
      * @param {View.ViewSpec} obj The view configuration object.
      */
     addView: bridge.addView,
+
+    /**
+     * Registers a new context configuration in the registry.
+     * The registry stores all context configurations.
+     * The buttons in editor configuration object can contain a context property.
+     * These button specifications can use the registered contexts to determine
+     * whether to enable or disable the buttons based on the current context.
+     *
+     * @method addContext
+     * @param {String} name Unique name identifying the new context configuration.
+     * @param {Function} pred A predicate function that determines if the context is active
+     */
+    addContext: bridge.addContext,
 
     /* note getAll is an internal method and may not be supported in future revisions */
     getAll: bridge.getAll
